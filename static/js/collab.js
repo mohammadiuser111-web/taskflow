@@ -1,0 +1,1 @@
+setInterval(()=>api('/api/heartbeat/',{}),30000);api('/api/heartbeat/',{});let p=document.querySelector('#presence');if(p){async function load(){let r=await fetch('/api/projects/'+p.dataset.project+'/presence/'),d=await r.json();p.innerHTML=d.users.map(u=>`<span class="presence ${u.online?'online':''}">● ${u.username}</span>`).join(' ') }load();setInterval(load,18000)}

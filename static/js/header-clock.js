@@ -1,0 +1,1 @@
+function clock(){let d=new Date();document.querySelector('#tehran-clock').textContent=d.toLocaleTimeString('fa-IR',{timeZone:'Asia/Tehran'});document.querySelector('#gregorian').textContent=d.toLocaleDateString('en-CA',{timeZone:'Asia/Tehran'})}clock();setInterval(clock,1000)

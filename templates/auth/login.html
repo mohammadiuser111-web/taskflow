@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<section class="auth"><h1>ورود به TaskFlow</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button>ورود</button></form><a href="/register/">حساب ندارید؟ ثبت‌نام</a></section>{% endblock %}
