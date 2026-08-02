@@ -59,6 +59,8 @@ def status_task(request,id):
  if st not in ('todo','in_progress','done'):return err('وضعیت نامعتبر است.')
  blockers=t.incoming_dependencies.exclude(from_task__status='done')
  if st in ('in_progress','done') and blockers.exists():return err('مسدود شده توسط: '+blockers.first().from_task.title)
+ if st=='done' and t.subtasks.filter(is_done=False).exists():return err('هنوز زیرکار ناتمام دارید.')
+ if st=='done' and data(request).get('confirm')!='آره':return err('برای تأیید، «آره» را وارد کنید.')
  t.status=st
  if st=='in_progress' and not t.started_at:t.started_at=timezone.now()
  t.refresh_color();t.save()
@@ -151,4 +153,42 @@ def delete_task(request,id):
  t,e=task_access(request,id,delete=True)
  if e:return e
  t.delete()
+ return JsonResponse({'ok':True})
+@login_required
+@require_POST
+def task_edit(request,id):
+ t,e=task_access(request,id)
+ if e:return e
+ d=data(request);t.title=d.get('title',t.title).strip() or t.title;t.description=d.get('description',t.description);t.save(update_fields=['title','description']);return JsonResponse({'ok':True})
+@login_required
+@require_POST
+def task_extend(request,id):
+ t,e=task_access(request,id)
+ if e:return e
+ d=data(request)
+ try:
+  dt=datetime.fromisoformat(d['extension_due_date'].replace('Z','+00:00'));t.extension_due_date=timezone.make_aware(dt) if timezone.is_naive(dt) else dt;t.save(update_fields=['extension_due_date'])
+ except:return err('زمان کمکی نامعتبر است.')
+ return JsonResponse({'ok':True})
+@login_required
+@require_POST
+def project_action(request,id,action):
+ p=Project.objects.filter(id=id,owner=request.user).first()
+ if not p:return err('مجاز نیستید.',403)
+ d=data(request)
+ if action in ('delete','complete') and d.get('confirm')!='آره':return err('برای تأیید، «آره» را وارد کنید.')
+ if action=='delete':p.delete();return JsonResponse({'ok':True})
+ if action=='complete':
+  if p.tasks.exclude(status='done').exists() or SubTask.objects.filter(task__project=p,is_done=False).exists():return err('هنوز وظیفه یا زیرکار ناتمام وجود دارد.')
+  p.status='done';p.completed_at=timezone.now();p.save(update_fields=['status','completed_at']);return JsonResponse({'ok':True})
+ p.name=d.get('name',p.name).strip() or p.name;p.description=d.get('description',p.description);p.save(update_fields=['name','description']);return JsonResponse({'ok':True})
+@login_required
+@require_POST
+def workspace_move(request):
+ d=data(request);kind=d.get('kind');obj=(Task.objects.filter(id=d.get('id')).first() if kind=='task' else Project.objects.filter(id=d.get('id')).first())
+ if not obj:return err('آیتم پیدا نشد.',404)
+ if kind=='task' and not can_user_edit_task(request.user,obj):return err('مجاز نیستید.',403)
+ if kind=='project' and obj.owner_id!=request.user.id:return err('مجاز نیستید.',403)
+ try:obj.workspace_position=float(d.get('position',0));obj.save(update_fields=['workspace_position'])
+ except:return err('موقعیت نامعتبر است.')
  return JsonResponse({'ok':True})

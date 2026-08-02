@@ -23,7 +23,7 @@ class Group(models.Model):
 
 class Project(models.Model):
     name=models.CharField(max_length=160); description=models.TextField(blank=True)
-    owner=models.ForeignKey(User,on_delete=models.CASCADE,related_name='owned_projects'); group=models.ForeignKey(Group,null=True,blank=True,on_delete=models.SET_NULL,related_name='projects'); created_at=models.DateTimeField(auto_now_add=True)
+    owner=models.ForeignKey(User,on_delete=models.CASCADE,related_name='owned_projects'); status=models.CharField(max_length=12,default='active'); completed_at=models.DateTimeField(null=True,blank=True); workspace_position=models.FloatField(default=0); group=models.ForeignKey(Group,null=True,blank=True,on_delete=models.SET_NULL,related_name='projects'); created_at=models.DateTimeField(auto_now_add=True)
     def __str__(self): return self.name
 class Tag(models.Model):
     name=models.CharField(max_length=60); color=models.CharField(max_length=16,blank=True); project=models.ForeignKey(Project,null=True,blank=True,on_delete=models.CASCADE,related_name='tags'); owner=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -32,7 +32,7 @@ class Tag(models.Model):
 class Task(models.Model):
     STATUS=[('todo','برای انجام'),('in_progress','در حال انجام'),('done','انجام‌شده')]; TYPES=[('normal','عادی'),('goal','هدف')]
     title=models.CharField(max_length=220); description=models.TextField(blank=True); owner=models.ForeignKey(User,on_delete=models.CASCADE,related_name='tasks'); project=models.ForeignKey(Project,null=True,blank=True,on_delete=models.CASCADE,related_name='tasks'); tags=models.ManyToManyField(Tag,blank=True)
-    status=models.CharField(max_length=16,choices=STATUS,default='todo'); display_color=models.CharField(max_length=16,default='todo',db_index=True); due_date=models.DateTimeField(null=True,blank=True); reminder_enabled=models.BooleanField(default=False); started_at=models.DateTimeField(null=True,blank=True); task_type=models.CharField(max_length=12,choices=TYPES,default='normal'); position_x=models.FloatField(null=True,blank=True); position_y=models.FloatField(null=True,blank=True); created_at=models.DateTimeField(auto_now_add=True)
+    status=models.CharField(max_length=16,choices=STATUS,default='todo'); display_color=models.CharField(max_length=16,default='todo',db_index=True); due_date=models.DateTimeField(null=True,blank=True); reminder_enabled=models.BooleanField(default=False); started_at=models.DateTimeField(null=True,blank=True); task_type=models.CharField(max_length=12,choices=TYPES,default='normal'); position_x=models.FloatField(null=True,blank=True); workspace_position=models.FloatField(default=0); extension_due_date=models.DateTimeField(null=True,blank=True); position_y=models.FloatField(null=True,blank=True); created_at=models.DateTimeField(auto_now_add=True)
     def get_status_color(self,now=None):
         now=now or timezone.now()
         if self.status=='done': return 'done'
