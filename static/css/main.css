@@ -24,3 +24,6 @@
 .oauth-button img{width:31px;height:31px;object-fit:contain;display:block}
 .auth-field{box-shadow:none!important}
 .auth-field:focus-within{box-shadow:0 0 0 1px #55555a!important}
+
+/* Chrome paints saved credentials with its own pale autofill layer unless it is explicitly neutralized. */
+.auth-page .auth-field input:-webkit-autofill,.auth-page .auth-field input:-webkit-autofill:hover,.auth-page .auth-field input:-webkit-autofill:focus,.auth-page .auth-field input:-webkit-autofill:active{-webkit-box-shadow:0 0 0 1000px #111114 inset!important;box-shadow:0 0 0 1000px #111114 inset!important;background-color:transparent!important;-webkit-text-fill-color:#f5f5f5!important}
