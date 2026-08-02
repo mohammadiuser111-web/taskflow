@@ -21,7 +21,8 @@ def dashboard(request):
  pending=ProjectCollaborator.objects.filter(user=request.user,status='pending').select_related('project')
  tasks=Task.objects.filter(owner=request.user,project__isnull=True).prefetch_related('tags','subtasks')
  projects=Project.objects.filter(owner=request.user)|Project.objects.filter(collaborators__user=request.user,collaborators__status='accepted')
- return render(request,'dashboard.html',ctx(request,tasks=tasks.distinct(),projects=projects.distinct(),groups=Group.objects.filter(owner=request.user).prefetch_related('projects'),pending=pending))
+ my_tasks=(Task.objects.filter(owner=request.user)|Task.objects.filter(project__owner=request.user)|Task.objects.filter(project__collaborators__user=request.user,project__collaborators__status='accepted')).select_related('project','project__group').prefetch_related('tags','subtasks').distinct().order_by('display_color','due_date','created_at')
+ return render(request,'dashboard.html',ctx(request,tasks=tasks.distinct(),my_tasks=my_tasks,projects=projects.distinct(),groups=Group.objects.filter(owner=request.user).prefetch_related('projects'),pending=pending))
 @login_required
 def profile(request):
  p=request.user.profile
