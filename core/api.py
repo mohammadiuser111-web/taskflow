@@ -37,9 +37,6 @@ def create_task(request):
   if tag.name:t.tags.add(tag)
  for i,s in enumerate(d.get('subtasks',[])):
   if str(s).strip():SubTask.objects.create(task=t,title=str(s).strip(),order=i)
- if project:
-  for c in project.collaborators.filter(status='accepted').select_related('user','role'):
-   if not hasattr(c,'role') or not c.role.allowed_tags.exists() or t.tags.filter(id__in=c.role.allowed_tags.values('id')).exists(): send(c.user.profile,f'وظیفه جدید در {project.name}: {t.title}')
  return JsonResponse({'ok':True,'id':t.id,'color':t.get_status_color()})
 @login_required
 @require_POST

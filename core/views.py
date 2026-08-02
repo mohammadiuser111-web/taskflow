@@ -34,7 +34,6 @@ def profile(request):
 def create_project(request):
  if request.method=='POST':
   f=ProjectForm(request.POST)
-  f.fields['group'].queryset=Group.objects.filter(owner=request.user)
   if f.is_valid():p=f.save(commit=False);p.owner=request.user;p.save();return redirect('project_detail',p.id)
  return redirect('dashboard')
 @login_required
