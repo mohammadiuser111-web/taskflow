@@ -26,6 +26,9 @@ def dashboard(request):
 def profile(request):
  p=request.user.profile
  if request.method=='POST':
+  if request.POST.get('remove_avatar')=='1':
+   if p.avatar: p.avatar.delete(save=False)
+   p.avatar=None;p.save(update_fields=['avatar']);return redirect('profile')
   f=ProfileForm(request.POST,request.FILES,instance=p)
   if f.is_valid():f.save();return redirect('profile')
  else:f=ProfileForm(instance=p)
