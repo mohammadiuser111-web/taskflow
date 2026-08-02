@@ -145,3 +145,10 @@ def event_create(request):
  except:return err('تاریخ یا زمان نامعتبر است.')
  e=CalendarEvent.objects.create(project=p,group=g,title=d.get('title','رویداد'),type=d.get('type','event'),starts_at=dt,ends_at=end,notify_telegram=bool(d.get('notify_telegram')),created_by=request.user)
  return JsonResponse({'ok':True,'id':e.id})
+@login_required
+@require_POST
+def delete_task(request,id):
+ t,e=task_access(request,id,delete=True)
+ if e:return e
+ t.delete()
+ return JsonResponse({'ok':True})
