@@ -12,3 +12,7 @@ class ProfileForm(forms.ModelForm):
     class Meta: model=Profile; fields=['avatar','bio','github_url']
 class ProjectForm(forms.ModelForm):
     class Meta: model=Project; fields=['name','description']
+    def clean_avatar(self):
+        image=self.cleaned_data.get('avatar')
+        if image and image.size>2*1024*1024: raise forms.ValidationError('حجم تصویر باید حداکثر ۲ مگابایت باشد.')
+        return image
