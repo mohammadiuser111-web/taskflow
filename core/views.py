@@ -24,6 +24,12 @@ def dashboard(request):
  my_tasks=(Task.objects.filter(owner=request.user)|Task.objects.filter(project__owner=request.user)|Task.objects.filter(project__collaborators__user=request.user,project__collaborators__status='accepted')).select_related('project','project__group').prefetch_related('tags','subtasks').distinct().order_by('display_color','due_date','created_at')
  return render(request,'dashboard.html',ctx(request,tasks=tasks.distinct(),my_tasks=my_tasks,projects=projects.distinct(),groups=Group.objects.filter(owner=request.user).prefetch_related('projects'),pending=pending))
 @login_required
+def group_detail(request,id):
+ g=get_object_or_404(Group,id=id,owner=request.user)
+ projects=Project.objects.filter(group=g)
+ my_tasks=Task.objects.filter(project__group=g).select_related('project','project__group').prefetch_related('tags','subtasks').order_by('display_color','due_date','created_at')
+ return render(request,'dashboard.html',ctx(request,tasks=Task.objects.none(),my_tasks=my_tasks,projects=projects,groups=Group.objects.filter(owner=request.user).prefetch_related('projects'),pending=ProjectCollaborator.objects.filter(user=request.user,status='pending').select_related('project'),active_group=g))
+@login_required
 def profile(request):
  p=request.user.profile
  if request.method=='POST':
