@@ -130,22 +130,19 @@ def presence(request,id):
 def calendar_events(request):
  try:y=int(request.GET['year']);m=int(request.GET['month'])
  except:return err('ماه نامعتبر است.')
- tasks=Task.objects.filter(owner=request.user,due_date__year=y,due_date__month=m)|Task.objects.filter(project__collaborators__user=request.user,project__collaborators__status='accepted',due_date__year=y,due_date__month=m)
- events=CalendarEvent.objects.filter(starts_at__year=y,starts_at__month=m,created_by=request.user)|CalendarEvent.objects.filter(project__collaborators__user=request.user,project__collaborators__status='accepted',starts_at__year=y,starts_at__month=m)
+ tasks=Task.objects.filter(owner=request.user,due_date__year=y,due_date__month=m)
+ events=CalendarEvent.objects.filter(starts_at__year=y,starts_at__month=m,created_by=request.user)
  return JsonResponse({'tasks':[{'title':t.title,'date':t.due_date.isoformat(),'color':t.get_status_color()} for t in tasks.distinct()],'events':[{'title':e.title,'date':e.starts_at.isoformat(),'type':e.type} for e in events.distinct()]})
 @login_required
 @require_POST
 def event_create(request):
  d=data(request);p=Project.objects.filter(id=d.get('project_id')).first() if d.get('project_id') else None
- g=Group.objects.filter(id=d.get('group_id'),owner=request.user).first() if d.get('group_id') else None
- if d.get('group_id') and not g:return err('گروه نامعتبر است.',403)
- if p and g and p.group_id!=g.id:return err('پروژه متعلق به این گروه نیست.')
  if not can_create(request.user,p):return err('مجاز نیستید.',403)
  try:
   dt=datetime.fromisoformat(d['starts_at'].replace('Z','+00:00'));dt=timezone.make_aware(dt) if timezone.is_naive(dt) else dt
   end_raw=d.get('ends_at');end=datetime.fromisoformat(end_raw.replace('Z','+00:00')) if end_raw else None;end=timezone.make_aware(end) if end and timezone.is_naive(end) else end
  except:return err('تاریخ یا زمان نامعتبر است.')
- e=CalendarEvent.objects.create(project=p,group=g,title=d.get('title','رویداد'),type=d.get('type','event'),starts_at=dt,ends_at=end,notify_telegram=bool(d.get('notify_telegram')),created_by=request.user)
+ e=CalendarEvent.objects.create(project=p,title=d.get('title','رویداد'),type=d.get('type','event'),starts_at=dt,ends_at=end,notify_telegram=bool(d.get('notify_telegram')),created_by=request.user)
  return JsonResponse({'ok':True,'id':e.id})
 @login_required
 @require_POST

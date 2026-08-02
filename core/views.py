@@ -18,19 +18,10 @@ def register(request):
  return render(request,'auth/register.html',ctx(request,form=f))
 @login_required
 def dashboard(request):
- pending=ProjectCollaborator.objects.filter(user=request.user,status='pending').select_related('project')
- tasks=Task.objects.filter(owner=request.user,project__isnull=True).prefetch_related('tags','subtasks')
- projects=Project.objects.filter(owner=request.user)|Project.objects.filter(collaborators__user=request.user,collaborators__status='accepted')
- my_tasks=(Task.objects.filter(owner=request.user)|Task.objects.filter(project__owner=request.user)|Task.objects.filter(project__collaborators__user=request.user,project__collaborators__status='accepted')).select_related('project','project__group').prefetch_related('tags','subtasks').distinct().order_by('display_color','due_date','created_at')
- completed_tasks=my_tasks.filter(status='done'); completed_projects=projects.filter(status='done'); my_tasks=my_tasks.exclude(status='done'); projects=projects.exclude(status='done'); tasks=tasks.exclude(status='done')
- return render(request,'dashboard.html',ctx(request,tasks=tasks.distinct(),my_tasks=my_tasks,completed_tasks=completed_tasks,projects=projects.distinct(),completed_projects=completed_projects,groups=Group.objects.filter(owner=request.user).prefetch_related('projects'),pending=pending))
-@login_required
-def group_detail(request,id):
- g=get_object_or_404(Group,id=id,owner=request.user)
- projects=Project.objects.filter(group=g)
- my_tasks=Task.objects.filter(project__group=g).select_related('project','project__group').prefetch_related('tags','subtasks').order_by('display_color','due_date','created_at')
- completed_tasks=my_tasks.filter(status='done'); completed_projects=projects.filter(status='done'); my_tasks=my_tasks.exclude(status='done'); projects=projects.exclude(status='done')
- return render(request,'dashboard.html',ctx(request,tasks=Task.objects.none(),my_tasks=my_tasks,completed_tasks=completed_tasks,projects=projects,completed_projects=completed_projects,groups=Group.objects.filter(owner=request.user).prefetch_related('projects'),pending=ProjectCollaborator.objects.filter(user=request.user,status='pending').select_related('project'),active_group=g))
+ projects=Project.objects.filter(owner=request.user)
+ my_tasks=Task.objects.filter(owner=request.user).select_related('project').prefetch_related('subtasks').order_by('display_color','due_date')
+ completed_tasks=my_tasks.filter(status='done');completed_projects=projects.filter(status='done')
+ return render(request,'dashboard.html',ctx(request,tasks=my_tasks.exclude(status='done',project__isnull=False),my_tasks=my_tasks.exclude(status='done'),completed_tasks=completed_tasks,projects=projects.exclude(status='done'),completed_projects=completed_projects))
 @login_required
 def profile(request):
  p=request.user.profile
@@ -47,13 +38,6 @@ def create_project(request):
   if f.is_valid():p=f.save(commit=False);p.owner=request.user;p.save();return redirect('project_detail',p.id)
  return redirect('dashboard')
 @login_required
-def create_group(request):
- if request.method=='POST':
-  f=GroupForm(request.POST)
-  if f.is_valid():
-   g=f.save(commit=False);g.owner=request.user;g.save()
- return redirect('dashboard')
-@login_required
 def project_detail(request,id):
  p=get_object_or_404(Project,id=id)
  if not can_view_project(request.user,p):return redirect('dashboard')
@@ -67,4 +51,4 @@ def studio(request,project_id=None):
  deps=TaskDependency.objects.filter(from_task__in=tasks).select_related('from_task','to_task')
  return render(request,'studio.html',ctx(request,project=p,tasks=tasks,labels=labels,deps=deps,projects=[p] if p else [],can_edit=can_create(request.user,p)))
 @login_required
-def calendar(request):return render(request,'calendar.html',ctx(request,projects=(Project.objects.filter(owner=request.user)|Project.objects.filter(collaborators__user=request.user,collaborators__status='accepted')).distinct(),groups=Group.objects.filter(owner=request.user)))
+def calendar(request):return render(request,'calendar.html',ctx(request,projects=Project.objects.filter(owner=request.user)))
