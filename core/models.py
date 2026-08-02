@@ -56,7 +56,7 @@ class ProjectRole(models.Model):
     collaborator=models.OneToOneField(ProjectCollaborator,on_delete=models.CASCADE,related_name='role'); can_create=models.BooleanField(default=True); can_edit=models.BooleanField(default=True); can_delete=models.BooleanField(default=False); allowed_tags=models.ManyToManyField(Tag,blank=True)
 class CalendarEvent(models.Model):
     TYPES=[('meeting','جلسه'),('event','رویداد')]
-    project=models.ForeignKey(Project,null=True,blank=True,on_delete=models.CASCADE,related_name='events'); group=models.ForeignKey(Group,null=True,blank=True,on_delete=models.SET_NULL,related_name='events'); title=models.CharField(max_length=200); type=models.CharField(max_length=10,choices=TYPES); starts_at=models.DateTimeField(); notify_telegram=models.BooleanField(default=False); created_by=models.ForeignKey(User,on_delete=models.CASCADE)
+    project=models.ForeignKey(Project,null=True,blank=True,on_delete=models.CASCADE,related_name='events'); group=models.ForeignKey(Group,null=True,blank=True,on_delete=models.SET_NULL,related_name='events'); title=models.CharField(max_length=200); type=models.CharField(max_length=10,choices=TYPES); starts_at=models.DateTimeField(); ends_at=models.DateTimeField(null=True,blank=True); notify_telegram=models.BooleanField(default=False); created_by=models.ForeignKey(User,on_delete=models.CASCADE)
 class NotificationLog(models.Model):
     object_id=models.PositiveIntegerField(); object_type=models.CharField(max_length=20); notification_kind=models.CharField(max_length=30); sent_at=models.DateTimeField(auto_now_add=True)
     class Meta: unique_together=('object_id','object_type','notification_kind')

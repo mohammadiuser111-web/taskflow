@@ -139,7 +139,9 @@ def event_create(request):
  if d.get('group_id') and not g:return err('گروه نامعتبر است.',403)
  if p and g and p.group_id!=g.id:return err('پروژه متعلق به این گروه نیست.')
  if not can_create(request.user,p):return err('مجاز نیستید.',403)
- try:dt=datetime.fromisoformat(d['starts_at'].replace('Z','+00:00'));dt=timezone.make_aware(dt) if timezone.is_naive(dt) else dt
- except:return err('تاریخ نامعتبر است.')
- e=CalendarEvent.objects.create(project=p,group=g,title=d.get('title','رویداد'),type=d.get('type','event'),starts_at=dt,notify_telegram=bool(d.get('notify_telegram')),created_by=request.user)
+ try:
+  dt=datetime.fromisoformat(d['starts_at'].replace('Z','+00:00'));dt=timezone.make_aware(dt) if timezone.is_naive(dt) else dt
+  end_raw=d.get('ends_at');end=datetime.fromisoformat(end_raw.replace('Z','+00:00')) if end_raw else None;end=timezone.make_aware(end) if end and timezone.is_naive(end) else end
+ except:return err('تاریخ یا زمان نامعتبر است.')
+ e=CalendarEvent.objects.create(project=p,group=g,title=d.get('title','رویداد'),type=d.get('type','event'),starts_at=dt,ends_at=end,notify_telegram=bool(d.get('notify_telegram')),created_by=request.user)
  return JsonResponse({'ok':True,'id':e.id})
