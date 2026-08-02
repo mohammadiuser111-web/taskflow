@@ -36,7 +36,9 @@ class Task(models.Model):
     def get_status_color(self,now=None):
         now=now or timezone.now()
         if self.status=='done': return 'done'
-        if self.due_date and now>self.due_date: return 'overdue'
+        if self.due_date and now>self.due_date:
+            if self.extension_due_date and now<=self.extension_due_date: return 'soon'
+            return 'overdue'
         if self.due_date and now>=self.due_date-timedelta(hours=24): return 'soon'
         return 'progress' if self.status=='in_progress' else 'todo'
     def refresh_color(self,now=None): self.display_color=self.get_status_color(now); return self.display_color
