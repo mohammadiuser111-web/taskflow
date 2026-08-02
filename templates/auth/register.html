@@ -1,1 +1,32 @@
-{% extends 'base.html' %}{% block content %}<section class="auth"><h1>ساخت حساب</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button>ثبت‌نام</button></form><a href="/login/">ورود</a></section>{% endblock %}
+<!doctype html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ثبت‌نام | TaskFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="auth-visual" aria-hidden="true">
+      <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/leftSideImage.png" alt="">
+      <div class="visual-overlay"></div>
+      <div class="visual-copy"><span class="auth-mark">TaskFlow</span><h1>از همین‌جا شروع کنید.</h1><p>یک فضای شخصی برای تبدیل ایده‌ها و برنامه‌های شما به کارهای انجام‌شده.</p></div>
+    </section>
+    <section class="auth-content">
+      <form method="post" class="auth-form" novalidate>
+        {% csrf_token %}
+        <a class="auth-mobile-brand" href="/">TaskFlow</a>
+        <h2>ساخت حساب</h2>
+        <p class="auth-subtitle">کمتر از یک دقیقه تا شروع مدیریت کارها فاصله دارید.</p>
+        {% if form.non_field_errors %}<div class="auth-error">{{ form.non_field_errors }}</div>{% endif %}
+        <label class="auth-field"><span class="field-icon">@</span><input name="username" type="text" autocomplete="username" placeholder="نام کاربری" required autofocus value="{{form.username.value|default:''}}"></label>
+        {% if form.username.errors %}<small class="field-error">{{form.username.errors|join:', '}}</small>{% endif %}
+        <label class="auth-field"><span class="field-icon">⌁</span><input name="password" type="password" autocomplete="new-password" placeholder="رمز عبور" required></label>
+        <label class="auth-field"><span class="field-icon">⌁</span><input name="password2" type="password" autocomplete="new-password" placeholder="تکرار رمز عبور" required></label>
+        <button type="submit" class="auth-submit">ساخت حساب</button>
+        <p class="auth-switch">حساب دارید؟ <a href="/login/">وارد شوید</a></p>
+      </form>
+    </section>
+  </main>
+</body></html>
