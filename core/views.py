@@ -21,7 +21,7 @@ def dashboard(request):
  pending=ProjectCollaborator.objects.filter(user=request.user,status='pending').select_related('project')
  tasks=Task.objects.filter(owner=request.user,project__isnull=True).prefetch_related('tags','subtasks')
  projects=Project.objects.filter(owner=request.user)|Project.objects.filter(collaborators__user=request.user,collaborators__status='accepted')
- return render(request,'dashboard.html',ctx(request,tasks=tasks.distinct(),projects=projects.distinct(),pending=pending))
+ return render(request,'dashboard.html',ctx(request,tasks=tasks.distinct(),projects=projects.distinct(),groups=Group.objects.filter(owner=request.user).prefetch_related('projects'),pending=pending))
 @login_required
 def profile(request):
  p=request.user.profile
@@ -34,7 +34,15 @@ def profile(request):
 def create_project(request):
  if request.method=='POST':
   f=ProjectForm(request.POST)
+  f.fields['group'].queryset=Group.objects.filter(owner=request.user)
   if f.is_valid():p=f.save(commit=False);p.owner=request.user;p.save();return redirect('project_detail',p.id)
+ return redirect('dashboard')
+@login_required
+def create_group(request):
+ if request.method=='POST':
+  f=GroupForm(request.POST)
+  if f.is_valid():
+   g=f.save(commit=False);g.owner=request.user;g.save()
  return redirect('dashboard')
 @login_required
 def project_detail(request,id):
@@ -50,4 +58,4 @@ def studio(request,project_id=None):
  deps=TaskDependency.objects.filter(from_task__in=tasks).select_related('from_task','to_task')
  return render(request,'studio.html',ctx(request,project=p,tasks=tasks,labels=labels,deps=deps,projects=[p] if p else [],can_edit=can_create(request.user,p)))
 @login_required
-def calendar(request):return render(request,'calendar.html',ctx(request,projects=(Project.objects.filter(owner=request.user)|Project.objects.filter(collaborators__user=request.user,collaborators__status='accepted')).distinct()))
+def calendar(request):return render(request,'calendar.html',ctx(request,projects=(Project.objects.filter(owner=request.user)|Project.objects.filter(collaborators__user=request.user,collaborators__status='accepted')).distinct(),groups=Group.objects.filter(owner=request.user)))

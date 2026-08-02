@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile,Project
+from .models import Profile,Project,Group
 class RegisterForm(forms.Form):
     username=forms.CharField(max_length=150); password=forms.CharField(widget=forms.PasswordInput); password2=forms.CharField(widget=forms.PasswordInput,label='تکرار رمز عبور')
     def clean(self):
@@ -11,4 +11,6 @@ class RegisterForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     class Meta: model=Profile; fields=['avatar','bio']
 class ProjectForm(forms.ModelForm):
-    class Meta: model=Project; fields=['name','description']
+    class Meta: model=Project; fields=['name','description','group']
+class GroupForm(forms.ModelForm):
+    class Meta: model=Group; fields=['name','description']
