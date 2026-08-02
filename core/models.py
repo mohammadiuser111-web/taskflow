@@ -8,6 +8,7 @@ class Profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     avatar=models.ImageField(upload_to='avatars/',blank=True,null=True)
     bio=models.TextField(blank=True)
+    github_url=models.URLField(blank=True)
     telegram_chat_id=models.CharField(max_length=64,blank=True)
     telegram_link_token=models.CharField(max_length=64,unique=True,default=secrets.token_urlsafe)
     last_seen=models.DateTimeField(null=True,blank=True)

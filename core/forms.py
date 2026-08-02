@@ -9,6 +9,6 @@ class RegisterForm(forms.Form):
         if User.objects.filter(username=d.get('username')).exists(): raise forms.ValidationError('این نام کاربری قبلاً گرفته شده است.')
         return d
 class ProfileForm(forms.ModelForm):
-    class Meta: model=Profile; fields=['avatar','bio']
+    class Meta: model=Profile; fields=['avatar','bio','github_url']
 class ProjectForm(forms.ModelForm):
     class Meta: model=Project; fields=['name','description']
