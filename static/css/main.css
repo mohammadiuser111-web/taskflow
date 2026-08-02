@@ -17,3 +17,10 @@
 .oauth-button img{width:28px;height:28px}
 .auth-field{border:0;background:#111114}
 .auth-field:focus-within{border:0;box-shadow:0 0 0 1px #535357}
+
+/* Icons are vector-based so the field wrapper and its real input read as one clean control. */
+.field-icon{display:flex;align-items:center;justify-content:center;width:19px;height:19px;color:#a8a8ad;flex:0 0 19px}
+.field-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.oauth-button img{width:31px;height:31px;object-fit:contain;display:block}
+.auth-field{box-shadow:none!important}
+.auth-field:focus-within{box-shadow:0 0 0 1px #55555a!important}
