@@ -104,3 +104,6 @@ body:not(.auth-page) .time-input{width:100%;height:44px!important;border:1px sol
 
 /* Requested opaque semantic green/red across statuses and action surfaces. */
 :root{--status-done:#66ba0ae0;--status-overdue:#ba0a0ae0;--action-success:#66ba0ae0;--action-danger:#ba0a0ae0}.action-success,.button-success,.event-submit,.profile-form-footer button,.profile-form>button,#task-form button[type="submit"]{color:#f4fff0!important}.action-cancel,.button-danger,.button-cancel{color:#ffe9e9!important}.presence.online{color:#66ba0ae0}
+
+/* A calendar item always shows its exact selected minute, not only the enclosing hour row. */
+.day-entry{display:inline-flex!important;align-items:center;gap:5px}.day-entry .entry-time{font-size:9px;opacity:.72;direction:ltr}
