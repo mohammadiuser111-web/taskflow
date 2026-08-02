@@ -12,3 +12,8 @@
 }
 .auth-page .auth-field input{background:transparent!important;color:#f5f5f5!important;box-shadow:none!important}
 .auth-page .auth-field input:-webkit-autofill,.auth-page .auth-field input:-webkit-autofill:hover,.auth-page .auth-field input:-webkit-autofill:focus{border:0;-webkit-text-fill-color:#f5f5f5!important;-webkit-box-shadow:0 0 0 1000px #090909 inset!important;box-shadow:0 0 0 1000px #090909 inset!important;caret-color:#fff;transition:background-color 9999s ease-out 0s}
+
+/* Cleaner, border-free auth controls. Field names are intentionally kept as Persian placeholders. */
+.oauth-button img{width:28px;height:28px}
+.auth-field{border:0;background:#111114}
+.auth-field:focus-within{border:0;box-shadow:0 0 0 1px #535357}
