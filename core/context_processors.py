@@ -6,4 +6,4 @@ def workspace(request):
     match=getattr(request,'resolver_match',None)
     if getattr(request,'user',None) and request.user.is_authenticated and match and match.url_name=='group_detail':
         active_group=Group.objects.filter(id=match.kwargs.get('id'),owner=request.user).first()
-    return {'active_workspace':active_group.name if active_group else 'شخصی','active_group':active_group}
+    return {'active_workspace':active_group.name if active_group else 'شخصی','active_group':active_group,'workspace_groups':Group.objects.filter(owner=request.user) if getattr(request,'user',None) and request.user.is_authenticated else []}
