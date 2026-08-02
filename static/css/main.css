@@ -27,3 +27,26 @@
 
 /* Chrome paints saved credentials with its own pale autofill layer unless it is explicitly neutralized. */
 .auth-page .auth-field input:-webkit-autofill,.auth-page .auth-field input:-webkit-autofill:hover,.auth-page .auth-field input:-webkit-autofill:focus,.auth-page .auth-field input:-webkit-autofill:active{-webkit-box-shadow:0 0 0 1000px #111114 inset!important;box-shadow:0 0 0 1000px #111114 inset!important;background-color:transparent!important;-webkit-text-fill-color:#f5f5f5!important}
+
+/* Application dark palette — status stripes remain the only semantic accent colours. */
+:root{--bg:#050505;--surface:#111114;--surface-alt:#19191c;--border:#2c2c30;--text:#f5f5f6;--text-muted:#97979d;--black:#fff;--node-bg:#f5f5f5;--node-border:#d6d6d8}
+body:not(.auth-page){background:var(--bg);color:var(--text)}
+body:not(.auth-page) header{background:rgba(5,5,5,.94);border-color:var(--border)}
+body:not(.auth-page) .brand,body:not(.auth-page) a{color:var(--text)}
+body:not(.auth-page) .clock,body:not(.auth-page) .link{color:var(--text-muted)}
+body:not(.auth-page) .panel{background:var(--surface);border-color:var(--border)}
+body:not(.auth-page) .task{background:#17171a;border-color:var(--border)}
+body:not(.auth-page) .project{border-color:var(--border)}
+body:not(.auth-page) input,body:not(.auth-page) textarea,body:not(.auth-page) select{background:#101013;color:var(--text);border-color:var(--border)}
+body:not(.auth-page) input::placeholder,body:not(.auth-page) textarea::placeholder{color:var(--text-muted)}
+body:not(.auth-page) select option{background:#111114;color:#f5f5f6}
+body:not(.auth-page) button,body:not(.auth-page) .button{background:#f5f5f6;color:#090909;border-color:#f5f5f6}
+body:not(.auth-page) button.secondary,body:not(.auth-page) .button.secondary{background:transparent;color:#f5f5f6;border-color:#414146}
+body:not(.auth-page) .link{background:transparent;border:0}
+body:not(.auth-page) .task select{background:#242428;color:#eee}
+body:not(.auth-page) .banner{background:#121215;border-color:#343438}
+body:not(.auth-page) dialog{background:#111114;color:#f5f5f6;border-color:#343438}
+body:not(.auth-page) .day{background:#101013;border-color:#2c2c30}
+body:not(.auth-page) .day.empty,body:not(.auth-page) .calendar-grid>b,body:not(.auth-page) .badge{background:#19191c}
+body:not(.auth-page) .calendar-grid{border-color:#2c2c30}
+body:not(.auth-page) .studio{border:1px solid #38383d}
