@@ -107,3 +107,6 @@ body:not(.auth-page) .time-input{width:100%;height:44px!important;border:1px sol
 
 /* A calendar item always shows its exact selected minute, not only the enclosing hour row. */
 .day-entry{display:inline-flex!important;align-items:center;gap:5px}.day-entry .entry-time{font-size:9px;opacity:.72;direction:ltr}
+
+/* Daily sheet: no redundant hour column; type values are centred. */
+.day-table td.kind-cell,.day-table th:last-child{text-align:center!important;width:130px}.day-table .entry-kind{margin:0!important}
