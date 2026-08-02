@@ -1,1 +1,23 @@
-{% extends 'base.html' %}{% block content %}<div class="title"><h1>تقویم</h1><button onclick="document.querySelector('#event-modal').showModal()">+ رویداد</button></div><div class="calendar-nav"><button onclick="shift(-1)">ماه قبل</button><b id="month-title"></b><button onclick="shift(1)">ماه بعد</button></div><div id="calendar-grid" class="calendar-grid"></div><dialog id="event-modal"><form id="event-form" class="modal"><h2>رویداد جدید</h2><input name="title" placeholder="عنوان" required><select name="project"><option value="">شخصی</option>{%for p in projects%}<option value="{{p.id}}">{{p.name}}</option>{%endfor%}</select><select name="type"><option value="meeting">جلسه</option><option value="event">رویداد</option></select><input name="start" type="datetime-local" required><label><input type="checkbox" name="notify"> اطلاع تلگرام</label><button>ذخیره</button></form></dialog>{% endblock %}{% block scripts %}<script src="/static/js/calendar.js"></script>{%endblock%}
+{% extends 'base.html' %}
+{% block content %}
+<section class="calendar-page">
+  <div class="calendar-topbar">
+    <div><span class="eyebrow">برنامه‌ریزی</span><h1 id="calendar-title">تقویم</h1></div>
+    <div class="calendar-actions"><div class="calendar-switch"><button class="active" type="button">هفته</button><button type="button" onclick="monthView()">ماه</button></div><button class="secondary" type="button" onclick="today()">امروز</button><button onclick="document.querySelector('#event-modal').showModal()">+ رویداد</button></div>
+  </div>
+  <div class="calendar-workspace">
+    <aside class="calendar-sidebar">
+      <div class="sidebar-heading"><h2>تقویم‌ها</h2><button type="button" onclick="document.querySelector('#event-modal').showModal()" aria-label="رویداد جدید">+</button></div>
+      <div class="calendar-filter active"><i></i><span>وظایف شخصی</span><b id="personal-count">۰</b></div>
+      <div class="calendar-filter"><i></i><span>جلسه‌ها و رویدادها</span><b id="event-count">۰</b></div>
+      <div class="calendar-side-divider"></div>
+      <div class="mini-calendar-head"><button type="button" onclick="miniShift(-1)">‹</button><strong id="mini-title"></strong><button type="button" onclick="miniShift(1)">›</button></div>
+      <div class="mini-weekdays"><span>ش</span><span>ی</span><span>د</span><span>س</span><span>چ</span><span>پ</span><span>ج</span></div><div id="mini-calendar" class="mini-calendar"></div>
+      <p class="calendar-hint">برای دیدن جزئیات، روی یک کارت در تقویم کلیک کنید.</p>
+    </aside>
+    <section class="calendar-main"><div class="week-toolbar"><div class="week-nav"><button type="button" onclick="shift(-1)" aria-label="هفته قبل">‹</button><button type="button" onclick="shift(1)" aria-label="هفته بعد">›</button></div><p id="week-range"></p></div><div class="schedule-scroll"><div id="week-header" class="week-header"></div><div id="week-grid" class="week-grid"></div></div></section>
+  </div>
+</section>
+<dialog id="event-modal"><form id="event-form" class="modal"><div class="title"><h2>رویداد جدید</h2><button type="button" class="secondary" onclick="this.closest('dialog').close()">×</button></div><input name="title" placeholder="عنوان رویداد" required><select name="project"><option value="">شخصی</option>{%for p in projects%}<option value="{{p.id}}">{{p.name}}</option>{%endfor%}</select><select name="type"><option value="meeting">جلسه</option><option value="event">رویداد</option></select><input name="start" type="datetime-local" required><label><input type="checkbox" name="notify"> اطلاع تلگرام</label><button>ذخیره رویداد</button></form></dialog>
+{% endblock %}
+{% block scripts %}<script src="/static/js/calendar.js"></script>{%endblock %}
