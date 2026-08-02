@@ -1,1 +1,30 @@
-{% extends 'base.html' %}{% block content %}<h1>پروفایل</h1><form class="panel" method="post" enctype="multipart/form-data">{% csrf_token %}{{form.as_p}}<button>ذخیره</button></form><section class="panel"><h2>تلگرام</h2>{% if profile.telegram_chat_id %}<p>حساب تلگرام متصل است ✓</p>{% else %}<p>برای اتصال، این پیوند یک‌بارمصرف را باز کنید:</p><a class="button" target="_blank" href="https://t.me/{{bot_username}}?start={{profile.telegram_link_token}}">اتصال تلگرام</a>{% endif %}</section>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<section class="profile-page">
+  <div class="profile-cover"><div class="cover-noise"></div><span class="profile-cover-label">فضای کاری شخصی</span></div>
+  <section class="profile-identity">
+    <div class="avatar-wrap">{% if profile.avatar %}<img src="{{ profile.avatar.url }}" alt="تصویر {{user.username}}">{% else %}<span>{{ user.username|first|upper }}</span>{% endif %}</div>
+    <div class="identity-copy"><h1>{{ user.username }}</h1><p>@{{ user.username }} · عضو TaskFlow.M</p></div>
+    <a class="button secondary profile-jump" href="#profile-settings">ویرایش پروفایل</a>
+  </section>
+
+  <nav class="profile-tabs" aria-label="ناوبری پروفایل"><a class="active" href="#profile-settings">نمای کلی</a><a href="#about-card">درباره من</a><a href="#telegram-card">اتصال‌ها</a></nav>
+
+  <div class="profile-grid" id="profile-settings">
+    <section class="profile-card profile-edit-card">
+      <div class="card-heading"><div><span class="eyebrow">پروفایل</span><h2>اطلاعات شخصی</h2></div><span class="card-icon"><svg viewBox="0 0 24 24"><path d="m14.5 5.5 4 4M4 20l4.2-.9L19 8.3a2.8 2.8 0 0 0-4-4L4.2 15.1z"></path></svg></span></div>
+      <form method="post" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+        <label class="profile-upload"><span>تصویر پروفایل</span><span class="upload-control"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 15v4h14v-4"></path></svg> انتخاب تصویر</span>{{ form.avatar }}</label>
+        <label class="profile-bio-label" id="about-card"><span>درباره من</span><textarea name="bio" rows="5" placeholder="چند کلمه درباره خودتان بنویسید…">{{ form.bio.value|default:'' }}</textarea></label>
+        <div class="profile-form-footer"><span>اطلاعات شما فقط در فضای کاری نمایش داده می‌شود.</span><button type="submit">ذخیره تغییرات</button></div>
+      </form>
+    </section>
+
+    <aside class="profile-side">
+      <section class="profile-card about-summary"><div class="card-heading"><div><span class="eyebrow">درباره من</span><h2>معرفی کوتاه</h2></div><span class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21c.9-4 3.3-6 7.5-6s6.6 2 7.5 6"></path></svg></span></div><p>{{ profile.bio|default:'هنوز توضیحی برای این پروفایل نوشته نشده است.' }}</p><div class="member-line"><span class="mini-avatar">{{user.username|first|upper}}</span><span>حساب شخصی TaskFlow.M</span></div></section>
+      <section class="profile-card telegram-card" id="telegram-card"><div class="card-heading"><div><span class="eyebrow">اتصال‌ها</span><h2>تلگرام</h2></div><span class="card-icon"><svg viewBox="0 0 24 24"><path d="m21 4-6.7 16-3.8-6-6-3.8zM10.3 14.2 14 10.5"></path></svg></span></div>{% if profile.telegram_chat_id %}<div class="connection-status connected"><i></i><span>حساب تلگرام متصل است</span></div><p>اعلان‌ها و یادآوری‌ها به تلگرام شما ارسال می‌شوند.</p>{% else %}<p>برای دریافت اعلان‌های وظایف و جلسه‌ها، حساب تلگرام خود را متصل کنید.</p><a class="button telegram-connect" target="_blank" href="https://t.me/{{bot_username}}?start={{profile.telegram_link_token}}">اتصال تلگرام</a>{% endif %}</section>
+    </aside>
+  </div>
+</section>
+{% endblock %}
