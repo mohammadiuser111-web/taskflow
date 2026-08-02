@@ -16,7 +16,7 @@ def poll():
           offset=u['update_id']+1; msg=u.get('message',{}); text=msg.get('text',''); chat=str(msg.get('chat',{}).get('id',''))
           if text.startswith('/start '):
             token=text.split(maxsplit=1)[1].strip(); p=Profile.objects.filter(telegram_link_token=token).first()
-            if p: p.telegram_chat_id=chat; p.refresh_token(); send(p,'حساب TaskFlow شما با موفقیت متصل شد ✅')
+            if p: p.telegram_chat_id=chat; p.refresh_token(); send(p,'حساب TaskFlow.M شما با موفقیت متصل شد ✅')
       except Exception: time.sleep(5)
       close_old_connections()
 def start_polling(): threading.Thread(target=poll,daemon=True,name='taskflow-telegram').start()
