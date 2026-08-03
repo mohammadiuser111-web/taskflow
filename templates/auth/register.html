@@ -11,12 +11,12 @@
     <section class="auth-visual" aria-hidden="true">
       <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/leftSideImage.png" alt="">
       <div class="visual-overlay"></div>
-      <div class="visual-copy"><span class="auth-mark">MOHAMMADI Tasks</span><h1>از همین‌جا شروع کنید.</h1><p>یک فضای شخصی برای تبدیل ایده‌ها و برنامه‌های شما به کارهای انجام‌شده.</p></div>
+      <div class="visual-copy"><span class="auth-mark"><img src="/static/images/mohammadi-tasks-logo.webp" alt="MOHAMMADI Tasks"></span><h1>از همین‌جا شروع کنید.</h1><p>یک فضای شخصی برای تبدیل ایده‌ها و برنامه‌های شما به کارهای انجام‌شده.</p></div>
     </section>
     <section class="auth-content">
       <form method="post" class="auth-form" novalidate>
         {% csrf_token %}
-        <a class="auth-mobile-brand" href="/">MOHAMMADI Tasks</a>
+        <a class="auth-mobile-brand" href="/"><img src="/static/images/mohammadi-tasks-logo.webp" alt="MOHAMMADI Tasks"></a>
         <h2>ساخت حساب</h2>
         <p class="auth-subtitle">کمتر از یک دقیقه تا شروع مدیریت کارها فاصله دارید.</p>
         {% if form.non_field_errors %}<div class="auth-error">{{ form.non_field_errors }}</div>{% endif %}
