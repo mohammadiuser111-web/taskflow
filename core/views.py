@@ -63,7 +63,7 @@ def project_detail(request,id):
 def studio(request,project_id=None):
  p=get_object_or_404(Project,id=project_id) if project_id else None
  if p and not can_view_project(request.user,p):return redirect('dashboard')
- tasks=(p.tasks if p else Task.objects.filter(owner=request.user,project__isnull=True)).prefetch_related('tags')
+ tasks=(p.tasks if p else Task.objects.filter(owner=request.user,project__isnull=True)).prefetch_related('subtasks')
  labels=StudioLabel.objects.filter(project=p) if p else StudioLabel.objects.filter(project__isnull=True,owner=request.user)
  deps=TaskDependency.objects.filter(from_task__in=tasks).select_related('from_task','to_task')
  return render(request,'studio.html',ctx(request,project=p,tasks=tasks,labels=labels,deps=deps,projects=[p] if p else [],can_edit=can_create(request.user,p)))
