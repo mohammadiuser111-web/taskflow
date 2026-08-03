@@ -7,7 +7,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import *
 from .permissions import *
-from .telegram_bot import send
 
 def data(request):
  try:return json.loads(request.body or '{}')
@@ -30,7 +29,7 @@ def create_task(request):
  if d.get('due_date'):
   try: due=datetime.fromisoformat(d['due_date'].replace('Z','+00:00')); due=timezone.make_aware(due) if timezone.is_naive(due) else due
   except ValueError:return err('تاریخ نامعتبر است.')
- t=Task.objects.create(title=title,description=d.get('description',''),owner=request.user,project=project,due_date=due,reminder_enabled=bool(d.get('reminder_enabled')),task_type=d.get('task_type','normal'),position_x=d.get('x'),position_y=d.get('y'))
+ t=Task.objects.create(title=title,description=d.get('description',''),owner=request.user,project=project,due_date=due,task_type=d.get('task_type','normal'),position_x=d.get('x'),position_y=d.get('y'))
  for i,s in enumerate(d.get('subtasks',[])):
   if str(s).strip():SubTask.objects.create(task=t,title=str(s).strip(),order=i)
  return JsonResponse({'ok':True,'id':t.id,'color':t.get_status_color()})
@@ -135,7 +134,7 @@ def event_create(request):
   dt=datetime.fromisoformat(d['starts_at'].replace('Z','+00:00'));dt=timezone.make_aware(dt) if timezone.is_naive(dt) else dt
   end_raw=d.get('ends_at');end=datetime.fromisoformat(end_raw.replace('Z','+00:00')) if end_raw else None;end=timezone.make_aware(end) if end and timezone.is_naive(end) else end
  except:return err('تاریخ یا زمان نامعتبر است.')
- e=CalendarEvent.objects.create(project=p,title=d.get('title','رویداد'),type=d.get('type','event'),starts_at=dt,ends_at=end,notify_telegram=bool(d.get('notify_telegram')),created_by=request.user)
+ e=CalendarEvent.objects.create(project=p,title=d.get('title','رویداد'),type=d.get('type','event'),starts_at=dt,ends_at=end,created_by=request.user)
  return JsonResponse({'ok':True,'id':e.id})
 @login_required
 @require_POST

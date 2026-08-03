@@ -8,5 +8,4 @@ class CoreConfig(AppConfig):
           from apscheduler.schedulers.background import BackgroundScheduler
           from .scheduler import scan_tasks
           scheduler=BackgroundScheduler(timezone='Asia/Tehran'); scheduler.add_job(scan_tasks,'interval',minutes=1,id='taskflow-scan',replace_existing=True); scheduler.start()
-          from .telegram_bot import start_polling; start_polling()
         except Exception: pass
