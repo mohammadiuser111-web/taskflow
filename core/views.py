@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.utils.text import slugify
 from .models import *
 from .forms import *
 from .permissions import *
@@ -45,7 +46,10 @@ def profile(request):
 def create_project(request):
  if request.method=='POST':
   f=ProjectForm(request.POST)
-  if f.is_valid():p=f.save(commit=False);p.owner=request.user;p.save();return redirect('project_detail',p.id)
+  if f.is_valid():
+   p=f.save(commit=False);p.owner=request.user;base=slugify(p.name,allow_unicode=True) or 'project';slug=base;n=2
+   while Project.objects.filter(slug=slug).exists():slug=f'{base}-{n}';n+=1
+   p.slug=slug;p.save();return redirect('project_detail_slug',p.slug)
  return redirect('dashboard')
 @login_required
 def project_detail_slug(request,slug):
