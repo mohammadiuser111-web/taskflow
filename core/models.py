@@ -10,7 +10,7 @@ class Profile(models.Model):
     github_url=models.URLField(blank=True)
 
 class Project(models.Model):
-    name=models.CharField(max_length=160); description=models.TextField(blank=True)
+    name=models.CharField(max_length=160); summary=models.CharField(max_length=240,blank=True); description=models.TextField(blank=True)
     owner=models.ForeignKey(User,on_delete=models.CASCADE,related_name='owned_projects'); slug=models.SlugField(max_length=180,unique=True,null=True,blank=True,allow_unicode=True); status=models.CharField(max_length=12,default='active'); completed_at=models.DateTimeField(null=True,blank=True); workspace_position=models.FloatField(default=0); created_at=models.DateTimeField(auto_now_add=True)
     def __str__(self): return self.name
 class Task(models.Model):
