@@ -188,3 +188,4 @@ body:not(.auth-page) .workspace-pill{height:35px!important;display:flex!importan
 /* Shared Linear-like card surface. */
 :root{--surface:#1A1A1B}.directory-card,.workspace-card,.panel,.profile-card,.task-sheet,.excel-calendar,.completed-panel{background:#1A1A1B!important}.directory-card:hover,.workspace-card:hover{background:#202021!important}.app-sidebar{font-family:Vazirmatn,Inter,sans-serif}.sidebar-nav .nav-item svg{stroke:#919294}.sidebar-nav .nav-item:hover svg{stroke:#f0f0f1}
 .task-project-name{margin-right:7px;color:#919294;font-size:10px;font-weight:400}.due-live{font-size:10px;color:#919294;white-space:nowrap}
+.due-deadline{font-size:10px;color:#d1d1d4;white-space:nowrap;margin-bottom:3px}.due-live{font-size:9px;color:#919294;white-space:nowrap}
