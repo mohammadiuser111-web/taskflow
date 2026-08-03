@@ -1,4 +1,3 @@
-import secrets
 from datetime import timedelta
 from django.db import models
 from django.contrib.auth.models import User
@@ -9,7 +8,6 @@ class Profile(models.Model):
     avatar=models.ImageField(upload_to='avatars/',blank=True,null=True)
     bio=models.TextField(blank=True)
     github_url=models.URLField(blank=True)
-    def refresh_token(self): self.telegram_link_token=secrets.token_urlsafe(24); self.save(update_fields=['telegram_link_token'])
 
 class Project(models.Model):
     name=models.CharField(max_length=160); description=models.TextField(blank=True)
