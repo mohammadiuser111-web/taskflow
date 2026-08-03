@@ -31,10 +31,6 @@ def create_task(request):
   try: due=datetime.fromisoformat(d['due_date'].replace('Z','+00:00')); due=timezone.make_aware(due) if timezone.is_naive(due) else due
   except ValueError:return err('تاریخ نامعتبر است.')
  t=Task.objects.create(title=title,description=d.get('description',''),owner=request.user,project=project,due_date=due,reminder_enabled=bool(d.get('reminder_enabled')),task_type=d.get('task_type','normal'),position_x=d.get('x'),position_y=d.get('y'))
- tags=d.get('tags',[])
- for name in tags:
-  tag,_=Tag.objects.get_or_create(name=str(name).strip(),project=project,owner=request.user)
-  if tag.name:t.tags.add(tag)
  for i,s in enumerate(d.get('subtasks',[])):
   if str(s).strip():SubTask.objects.create(task=t,title=str(s).strip(),order=i)
  return JsonResponse({'ok':True,'id':t.id,'color':t.get_status_color()})

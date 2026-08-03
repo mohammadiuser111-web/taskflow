@@ -28,7 +28,7 @@ def projects_page(request):
  return render(request,'projects.html',ctx(request,projects=projects))
 @login_required
 def tasks_page(request):
- tasks=Task.objects.filter(owner=request.user).prefetch_related('subtasks').order_by('status','due_date','created_at')
+ tasks=Task.objects.filter(owner=request.user,project__isnull=True).prefetch_related('subtasks').order_by('status','due_date','created_at')
  return render(request,'tasks.html',ctx(request,tasks=tasks))
 @login_required
 def profile(request):
@@ -48,10 +48,13 @@ def create_project(request):
   if f.is_valid():p=f.save(commit=False);p.owner=request.user;p.save();return redirect('project_detail',p.id)
  return redirect('dashboard')
 @login_required
+def project_detail_slug(request,slug):
+ return project_detail(request,Project.objects.get(slug=slug).id)
+@login_required
 def project_detail(request,id):
  p=get_object_or_404(Project,id=id)
  if not can_view_project(request.user,p):return redirect('dashboard')
- tasks=p.tasks.prefetch_related('tags','subtasks').all();return render(request,'project_detail.html',ctx(request,project=p,tasks=tasks,tags=p.tags.all(),projects=[p],can_edit=can_create(request.user,p),is_owner=p.owner_id==request.user.id))
+ tasks=p.tasks.prefetch_related('subtasks').all();return render(request,'project_detail.html',ctx(request,project=p,tasks=tasks,projects=[p],can_edit=True,is_owner=True))
 @login_required
 def studio(request,project_id=None):
  p=get_object_or_404(Project,id=project_id) if project_id else None
