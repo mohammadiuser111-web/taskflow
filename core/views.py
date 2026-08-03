@@ -23,6 +23,10 @@ def dashboard(request):
  completed_tasks=my_tasks.filter(status='done');completed_projects=projects.filter(status='done')
  return render(request,'dashboard.html',ctx(request,tasks=my_tasks.exclude(status='done',project__isnull=False),my_tasks=my_tasks.exclude(status='done'),completed_tasks=completed_tasks,projects=projects.exclude(status='done'),completed_projects=completed_projects))
 @login_required
+def tasks_page(request):
+ tasks=Task.objects.filter(owner=request.user).prefetch_related('subtasks').order_by('status','due_date','created_at')
+ return render(request,'tasks.html',ctx(request,tasks=tasks))
+@login_required
 def profile(request):
  p=request.user.profile
  if request.method=='POST':
