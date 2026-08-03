@@ -213,3 +213,5 @@ main.project-composer-body{max-width:none!important;margin:0!important;width:aut
 .app-sidebar .brand{display:block;padding:2px 8px!important}.app-sidebar .brand img{display:block;width:174px;height:auto;max-height:31px;object-fit:contain;object-position:right}.auth-mark img{width:170px;height:auto;display:block}.auth-mobile-brand img{width:175px;height:auto;display:inline-block}@media(max-width:780px){.app-sidebar .brand img{width:135px;max-height:25px}}
 /* Centre the supplied logo within the sidebar brand area. */
 .app-sidebar .brand{display:flex!important;justify-content:center!important;align-items:center}.app-sidebar .brand img{object-position:center!important}
+/* Keep Studio project summaries intentionally compact. */
+.projects-pane .directory-card small{font-size:9px!important;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.projects-pane .directory-card{min-height:58px;padding:10px 12px}.projects-pane .directory-card em{font-size:9px}
