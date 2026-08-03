@@ -69,7 +69,7 @@ def toggle_subtask(request,id):
  s=SubTask.objects.filter(id=id).select_related('task').first()
  if not s:return err('زیرکار پیدا نشد.',404)
  if not can_user_edit_task(request.user,s.task):return err('مجاز نیستید.',403)
- s.is_done=not s.is_done;s.save(update_fields=['is_done']);return JsonResponse({'ok':True,'done':s.is_done})
+ d=data(request);s.is_done=bool(d['is_done']) if 'is_done' in d else not s.is_done;s.save(update_fields=['is_done']);return JsonResponse({'ok':True,'done':s.is_done})
 @login_required
 @require_POST
 def dep_create(request):
