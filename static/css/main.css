@@ -230,3 +230,5 @@ main.project-composer-body{max-width:none!important;margin:0!important;width:aut
 .task-date-control,.task-time-control{cursor:pointer}.task-date-control svg,.task-time-control svg{pointer-events:none}
 /* Unified Lucide outline icon system. */
 .sidebar-nav .nav-item svg,.tree-label svg,.user-pill svg,.logout-icon svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.7;fill:none;flex:0 0 18px}.sidebar-nav .nav-item svg{color:#919294}.sidebar-nav .nav-item:hover svg{color:#f0f0f1}.logout-icon svg{color:#ba0a0ae0}
+/* Compact action icons that reveal their Persian label on hover. */
+.studio-action.icon-reveal{width:38px!important;min-width:38px!important;padding:0!important;gap:0;overflow:hidden;transition:width .2s ease,gap .2s ease}.studio-action.icon-reveal svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.7;fill:none;flex:0 0 17px}.studio-action.icon-reveal span{max-width:0;opacity:0;white-space:nowrap;transition:max-width .2s ease,opacity .15s ease}.studio-action.icon-reveal:hover{width:112px!important;gap:7px}.studio-action.icon-reveal:hover span{max-width:80px;opacity:1}
