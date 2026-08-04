@@ -228,3 +228,5 @@ main.project-composer-body{max-width:none!important;margin:0!important;width:aut
 /* Task creation now uses the same focused full composer as projects. */
 .task-composer-dialog{width:min(920px,96vw);height:min(720px,92vh)}.task-composer .project-composer-body{gap:12px}.task-composer .task-due-split{max-width:520px}.task-composer .subtask-builder{margin-top:3px;max-width:620px}.task-composer .subtask-builder>span{color:#aaaab0;font-size:11px}.task-composer .subtask-row input{background:#121213;border-color:#303034;color:#e5e5e7}.task-composer .add-subtask{margin-top:4px}.task-composer .project-create{background:#97d15e!important;border-color:#97d15e!important;color:#14200d!important}
 .task-date-control,.task-time-control{cursor:pointer}.task-date-control svg,.task-time-control svg{pointer-events:none}
+/* Unified Lucide outline icon system. */
+.sidebar-nav .nav-item svg,.tree-label svg,.user-pill svg,.logout-icon svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.7;fill:none;flex:0 0 18px}.sidebar-nav .nav-item svg{color:#919294}.sidebar-nav .nav-item:hover svg{color:#f0f0f1}.logout-icon svg{color:#ba0a0ae0}
