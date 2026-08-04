@@ -22,7 +22,10 @@ def dashboard(request):
  projects=Project.objects.filter(owner=request.user)
  my_tasks=Task.objects.filter(owner=request.user).select_related('project').prefetch_related('subtasks').order_by('display_color','due_date')
  completed_tasks=my_tasks.filter(status='done');completed_projects=projects.filter(status='done')
- return render(request,'dashboard.html',ctx(request,tasks=my_tasks.exclude(status='done',project__isnull=False),my_tasks=my_tasks.exclude(status='done'),completed_tasks=completed_tasks,projects=projects.exclude(status='done'),completed_projects=completed_projects))
+ now=timezone.now();today=now.date()
+ active_tasks=my_tasks.exclude(status='done');today_tasks=active_tasks.filter(due_date__date=today);soon_tasks=active_tasks.filter(due_date__gt=now,due_date__lte=now+timezone.timedelta(hours=24));recent_projects=projects.order_by('-created_at')[:4];recent_tasks=my_tasks.order_by('-created_at')[:5]
+ total=my_tasks.count();progress=round((completed_tasks.count()/total*100) if total else 0)
+ return render(request,'dashboard.html',ctx(request,tasks=my_tasks.exclude(status='done',project__isnull=False),my_tasks=active_tasks,completed_tasks=completed_tasks,projects=projects.exclude(status='done'),completed_projects=completed_projects,active_task_count=active_tasks.count(),today_tasks=today_tasks,soon_tasks=soon_tasks,recent_projects=recent_projects,recent_tasks=recent_tasks,progress=progress))
 @login_required
 def projects_page(request):
  projects=Project.objects.filter(owner=request.user).prefetch_related('tasks').order_by('status','created_at')
