@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <section class="calendar-page calendar-drilldown">
-  <div class="calendar-topbar"><div><span class="eyebrow">برنامه‌ریزی</span><h1>تقویم</h1></div><button onclick="document.querySelector('#event-modal').showModal()">+ رویداد جدید</button></div>
+  <div class="calendar-topbar"><div><span class="eyebrow">برنامه‌ریزی</span><h1>تقویم</h1></div><button class="icon-reveal page-add" onclick="document.querySelector('#event-modal').showModal()"><i data-lucide="calendar-plus"></i><span>رویداد جدید</span></button></div>
   <section class="excel-calendar">
     <div class="calendar-path" id="calendar-path"></div>
     <div class="calendar-sheet-head"><div><span id="sheet-kicker">لایه چهارم</span><h2 id="sheet-title">برنامه روز</h2></div><div class="sheet-controls"><button class="secondary" type="button" onclick="move(-1)" aria-label="قبلی">‹</button><button class="secondary" type="button" onclick="goToday()">امروز</button><button class="secondary" type="button" onclick="move(1)" aria-label="بعدی">›</button></div></div>
