@@ -241,3 +241,5 @@ main.project-composer-body{max-width:none!important;margin:0!important;width:aut
 body{font-size:11px!important}body button,body input,body textarea,body select,body label,body p,body a,body td,body th,body small,body span{font-size:11px!important}.title h1,.profile-identity h1,.visual-copy h1,.auth-form h2,.project-composer h2,.calendar-topbar h1{font-size:27px!important;font-weight:700;color:#f0f0f1}.title h2,.panel h2,.card-heading h2,.directory-card h2{font-size:16px!important;font-weight:700;color:#f0f0f1}.task-title-cell b,.directory-card b,.workspace-card h2{font-size:13px!important;font-weight:700;color:#f0f0f1}
 /* Absolute compact mode requested: every text element, including headings, is 11px. */
 body *{font-size:11px!important}
+/* Final typography override: explicitly neutralize every prior heading exception. */
+body .title h1,body .profile-identity h1,body .visual-copy h1,body .auth-form h2,body .project-composer h2,body .calendar-topbar h1,body .title h2,body .panel h2,body .card-heading h2,body .directory-card h2,body .task-title-cell b,body .directory-card b,body .workspace-card h2,body .project-name-input{font-size:11px!important}
