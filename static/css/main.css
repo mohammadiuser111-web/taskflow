@@ -260,3 +260,4 @@ body .title h1,body .profile-identity h1,body .visual-copy h1,body .auth-form h2
 :root{--bg:#000000;--surface:#1A1A1B;--text:#FFFFFF;--text-muted:#B8B8B8;--action-success:#6b9110;--status-done:#6b9110;--action-danger:#911010;--status-overdue:#911010}.project-create,.event-submit,.action-success{background:#6b9110!important;border-color:#6b9110!important;color:#fff!important}.action-cancel,.button-danger{border-color:#911010!important;color:#fff!important}
 /* Dashboard shortcut links use the olive semantic accent. */
 .soon-task-link{color:#6b9110!important}.soon-task-link:hover{color:#8fbd22!important}
+.soon-task-link:hover{color:#6b9110!important}
