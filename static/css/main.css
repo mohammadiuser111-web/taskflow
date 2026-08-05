@@ -247,3 +247,4 @@ body .title h1,body .profile-identity h1,body .visual-copy h1,body .auth-form h2
 .studio-directory-tabs{background:#121213!important}
 /* High-contrast task title and shared Calendar-style task date/time controls. */
 .task-composer .project-name-input{color:#fff!important;font-weight:700!important}.task-composer .project-name-input::placeholder{color:#fff!important;opacity:.92}.task-composer .time-input,.task-composer .persian-date-input{height:44px}.task-composer .time-input i,.task-composer .persian-date-input i{width:18px;height:18px;stroke:#f0f0f1;fill:none;stroke-width:1.7}.task-composer .persian-date-input input{color:#eee!important;text-align:right}.task-composer .persian-date-input input::placeholder{color:#a1a1a6}
+.task-composer .picker-days button{display:flex!important;align-items:center;justify-content:space-between;padding:0 8px!important}.task-composer .picker-days button small{font-size:9px!important;color:#919294}
