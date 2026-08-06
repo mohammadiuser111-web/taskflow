@@ -20,7 +20,8 @@ def task_access(request,id,delete=False):
 @login_required
 @require_POST
 def create_task(request):
- d=data(request); project=Project.objects.filter(id=d.get('project_id')).first() if d.get('project_id') else None
+ d=data(request); task_list=TaskList.objects.filter(id=d.get('task_list_id'),owner=request.user).first() if d.get('task_list_id') else None
+ project=Project.objects.filter(id=d.get('project_id')).first() if d.get('project_id') else None
  if d.get('project_id') and not project:return err('پروژه نامعتبر است.')
  if not can_create(request.user,project):return err('اجازه ساخت ندارید.',403)
  title=d.get('title','').strip()
@@ -29,7 +30,7 @@ def create_task(request):
  if d.get('due_date'):
   try: due=datetime.fromisoformat(d['due_date'].replace('Z','+00:00')); due=timezone.make_aware(due) if timezone.is_naive(due) else due
   except ValueError:return err('تاریخ نامعتبر است.')
- t=Task.objects.create(title=title,description=d.get('description',''),owner=request.user,project=project,due_date=due,task_type=d.get('task_type','normal'),position_x=d.get('x'),position_y=d.get('y'))
+ t=Task.objects.create(title=title,description=d.get('description',''),owner=request.user,project=project,task_list=task_list,due_date=due,task_type=d.get('task_type','normal'),position_x=d.get('x'),position_y=d.get('y'))
  for i,s in enumerate(d.get('subtasks',[])):
   if str(s).strip():SubTask.objects.create(task=t,title=str(s).strip(),order=i)
  return JsonResponse({'ok':True,'id':t.id,'color':t.get_status_color()})
@@ -181,3 +182,8 @@ def workspace_move(request):
  try:obj.workspace_position=float(d.get('position',0));obj.save(update_fields=['workspace_position'])
  except:return err('موقعیت نامعتبر است.')
  return JsonResponse({'ok':True})
+
+@login_required
+@require_POST
+def task_list_create(request):
+ d=data(request);count=TaskList.objects.filter(owner=request.user).count();name=d.get('name','').strip() or f'کار {count+1}';l=TaskList.objects.create(owner=request.user,name=name);return JsonResponse({'ok':True,'id':l.id,'name':l.name})
