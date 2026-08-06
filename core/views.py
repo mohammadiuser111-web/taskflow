@@ -32,8 +32,9 @@ def projects_page(request):
  return render(request,'projects.html',ctx(request,projects=projects))
 @login_required
 def tasks_page(request):
- tasks=Task.objects.filter(owner=request.user).select_related('project').prefetch_related('subtasks').order_by('status','due_date','created_at')
- return render(request,'tasks.html',ctx(request,tasks=tasks))
+ tasks=Task.objects.filter(owner=request.user,task_list__isnull=True).select_related('project').prefetch_related('subtasks').order_by('status','due_date','created_at')
+ task_lists=TaskList.objects.filter(owner=request.user).prefetch_related('tasks__subtasks')
+ return render(request,'tasks.html',ctx(request,tasks=tasks,task_lists=task_lists))
 @login_required
 def profile(request):
  p=request.user.profile
