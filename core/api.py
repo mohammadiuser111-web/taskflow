@@ -187,3 +187,10 @@ def workspace_move(request):
 @require_POST
 def task_list_create(request):
  d=data(request);count=TaskList.objects.filter(owner=request.user).count();name=d.get('name','').strip() or f'کار {count+1}';l=TaskList.objects.create(owner=request.user,name=name);return JsonResponse({'ok':True,'id':l.id,'name':l.name})
+@login_required
+@require_POST
+def task_list_delete(request,id):
+    task_list=TaskList.objects.filter(id=id,owner=request.user).first()
+    if not task_list:return err('باکس پیدا نشد.',404)
+    task_list.delete()
+    return JsonResponse({'ok':True})
